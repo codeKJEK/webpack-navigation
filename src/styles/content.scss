@@ -1,0 +1,28 @@
+.content {
+    padding: 0 16px;
+
+    
+    @media screen and (min-width: 1024px) {
+            width: 1016px;
+            margin: 0 auto;
+            padding: 0;
+
+            section {
+                padding: 0 12px;
+            }
+        }
+}
+
+.bottom {
+    padding: 0 16px;
+
+    @media screen and (min-width: 1024px) {
+            width: 1016px;
+            margin: 0 auto;
+            padding: 0;
+
+            section {
+                padding: 0 12px;
+            }
+        }
+}

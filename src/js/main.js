@@ -72,6 +72,14 @@ function bindListeners(blockName) {
       }, 500);
     }
   });
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      if (window.innerWidth >= 1024) {
+        toggleMenu(false);
+      }
+    })
+  );
 }
 
 function toggleMenu(expand) {
@@ -93,6 +101,18 @@ function changeFocus(expand) {
     ? document.querySelector(".banner__list").children[0].children[0]
     : document.querySelector(".banner__button--open");
   focusElement.focus();
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 window.addEventListener("DOMContentLoaded", initializePage);

@@ -57,17 +57,20 @@ body {
         overflow: hidden;
         height: 0;
         visibility: hidden;
-        transition: height 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        opacity: 0;
+        transition: height 0.3s ease-in-out, visibility 0.3s ease-in-out, opacity .3s ease-in-out;
 
         &[data-state="open"] {
             height: calc(100vh - $safe-margin-top - $mobile-link-height - ($pixel-small * 2) - $safe-margin-bottom);
             visibility: visible;
+            opacity: 1;
         }
 
         @media screen and (min-width: 1024px) {
             height: auto;
             visibility: visible;
             overflow: visible;
+            opacity: 1;
 
             &[data-state="open"] {
                 height: auto;
@@ -213,9 +216,6 @@ body {
             width: auto;
         }
     }
-
-    
-
 
     &__navigation {
         position: fixed;

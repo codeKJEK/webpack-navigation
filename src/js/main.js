@@ -10,10 +10,11 @@ function initializePage() {
 
 function buildNavigation(blockName) {
   const logo = `<a href="index.html" class="${blockName}__link ${blockName}__link--logo">Company Logo</a>`;
-  const phoneNumber = `<a href="tel:123-456-7890" class="${blockName}__link ${blockName}__link--phone">(123)<span class=${blockName}__number>456-7890</span></a>`;
+  const phoneNumber = `<a href="tel:1234567890" class="${blockName}__link ${blockName}__link--phone">(123) 456-7890</a>`;
   const openMenuButton = `<button class="${blockName}__button ${blockName}__button--open" aria-expanded="false" aria-controls="main-menu-container">Open Menu</button>`;
   const menu = buildMenu(blockName);
   const container = `
+    <a href="#content" class="${blockName}__link ${blockName}__link--skip">Skip to Main Content</a>
     <div class="${blockName}__container ${blockName}__container--main">
       ${logo}
       <nav class="${blockName}__navigation">
@@ -36,9 +37,9 @@ function buildMenu(blockName) {
     { href: "faq.html", text: "FAQ" },
   ];
   const menuItems = menuLinks.map((link) => {
-    return `<li class="${blockName}__item"><a href="${link.href}" class="${blockName}__link">${link.text}</a></li>`;
+    return `<li class="${blockName}__item"><a href="${link.href}" class="${blockName}__link ${blockName}__link--menu">${link.text}</a></li>`;
   });
-  const closeMenuButton = `<button class="${blockName}__button ${blockName}__button--close aria-expanded="false" aria-controls="main-menu-container">Close Menu</button>`;
+  const closeMenuButton = `<button class="${blockName}__button ${blockName}__button--close" aria-expanded="false" aria-controls="mainMenuContainer">Close Menu</button>`;
   const mainMenu = `
   <div id="mainMenuContainer" class="${blockName}__container ${blockName}__container--list" data-state="closed">
     <ul class="${blockName}__list">

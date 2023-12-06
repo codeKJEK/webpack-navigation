@@ -85,6 +85,8 @@ body {
             width: auto;
         }
     }
+
+
     &__link {
         height: $mobile-link-height;
         @include flex-center;
@@ -117,7 +119,42 @@ body {
         @include flex-center;
         height: $mobile-link-height;
         width: 100%;
-        
+    }
+
+    &__link, &__button {
+        @media (hover: hover) {
+            position: relative;
+            &::after, &::before {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 0px;
+                height: 2px;
+                transition: width 0.5s ease-in-out;
+            }
+            &::after {
+                bottom: 0;
+                right: 0;
+                background: linear-gradient(to left, $color-blue-1, $color-blue-2);
+            }
+            &::before {
+                top: 0;
+                left: 0;
+                background: linear-gradient(to right, $color-blue-1, $color-blue-2);
+            }
+            &:hover {
+                &::before {
+                    right: 0;
+                    left: auto;
+                    width: 100%;
+                }
+                &::after {
+                    right: auto;
+                    left: 0;
+                    width: 100%;
+                }
+            }
+        }
     }
 
     &__navigation {

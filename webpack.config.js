@@ -2,6 +2,7 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const jsPages = [
   "main",
+  "navigation",
   "index",
   "about",
   "service",
@@ -68,7 +69,7 @@ module.exports = {
           inject: true,
           filename: `${page}.html`,
           template: `./src/${page}.html`,
-          chunks: ["main", page],
+          chunks: ["navigation", page],
         })
     )
   ),

@@ -11,19 +11,25 @@ $safe-margin-top: calc(env(safe-area-inset-top) + 8px);
 $safe-margin-right: calc(env(safe-area-inset-right) + 16px);
 $safe-margin-bottom: calc(env(safe-area-inset-bottom) + 8px);
 $safe-margin-left: calc(env(safe-area-inset-left) + 16px);
-$scroll-padding: calc(var(--safe-margin-top) + var(--min-height-mobile) + 8px);
+$scroll-padding: calc($safe-margin-top + $mobile-link-height + $pixel-small);
 // COLOR
 $color-blue-1: #CCE6FF;
 $color-blue-2: #8AB8E6;
 $color-blue-3: #477DB3;
 $color-blue-4: #194D80;
 $color-blue-5: #00264D;
+$menu-background-color: linear-gradient(to bottom, $color-blue-4, $color-blue-5);
 
 // MIXINS
 @mixin flex-center {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: $scroll-padding;
 }
 
 
@@ -33,59 +39,51 @@ body {
     font-family: $brand-font;
 }
 
+.content {
+    height: 200vh;
+    padding-top: $scroll-padding;
+}
+
 .banner {
-    background: linear-gradient(to bottom, $color-blue-4, $color-blue-5);
+    background: $menu-background-color;
     color: #ffffff;
-    padding: $safe-margin-top $pixel-xs $pixel-small $pixel-xs;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     box-sizing: border-box;
+    padding: $safe-margin-top $pixel-xs $pixel-small $pixel-xs;
+    transition: transform .3s ease-in-out;
+    &[data-state="hidden"] {
+        transform: translateY(-100%);
+    }
     * {
         box-sizing: border-box;
     }
 
-    &__container--main {
+    &__divider {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-
-        @media screen and (min-width: 1024px) {
-            width: 1016px;
-            margin: 0 auto;
-        }
     }
 
-    &__container--list {
-        @include flex-center;
-        overflow: hidden;
-        height: 0;
-        visibility: hidden;
-        opacity: 0;
-        transition: height 0.3s ease-in-out, visibility 0.3s ease-in-out, opacity .3s ease-in-out;
-
-        &[data-state="open"] {
-            height: calc(100vh - $safe-margin-top - $mobile-link-height - ($pixel-small * 2) - $safe-margin-bottom);
-            visibility: visible;
-            opacity: 1;
-        }
-
-        @media screen and (min-width: 1024px) {
-            height: auto;
-            visibility: visible;
-            overflow: visible;
-            opacity: 1;
-
-            &[data-state="open"] {
-                height: auto;
-            }
-        }
-    }
-
-    &__link,
-    &__button {
+    &__link {
+        color: #ffffff;
+        text-decoration: none;
+        height: $mobile-link-height;
+        display: block;
+        display: flex;
+        align-items: center;
+        padding: 0 $pixel-medium;
         font-size: 1.125em;
-        @include flex-center;
-
+        &--logo {
+            font-weight: bold;
+        }
+        &--phone {
+            font-size: 1em;
+        }
         @media (hover: hover) {
             position: relative;
-
             &::after,
             &::before {
                 content: '';
@@ -124,132 +122,160 @@ body {
         }
     }
 
-    &__link {
-        height: $mobile-link-height;
-        color: inherit;
-        text-decoration: none;
-        padding: 0 $pixel-medium;
-
-        &--skip {
-            height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-
-            &:focus {
-                height: $mobile-link-height;
-                overflow: visible;
-                opacity: 1;
-            }
-        }
-
-        &--menu {
-            height: $mobile-link-height-xl;
-
-            @media screen and (min-width: 1024px) {
-                height: $mobile-link-height;
-            }
-        }
-
-        &--phone {
-            font-size: 1em;
-        }
-
-        &--logo {
-            font-weight: bold;
-        }
-    }
-
-    &__button {
-        background: none;
-        border: none;
-        color: inherit;
-        font-family: inherit;
-        cursor: pointer;
-        padding: 0;
-        height: $mobile-link-height;
-        width: 100%;
-
-        &--open {
-            visibility: visible;
-            opacity: 1;
-            transition: height .3s ease-in-out, visibility .3s ease-in-out, opacity .3s ease-in-out;
-
-            &[aria-expanded="true"] {
-                height: 0;
-                visibility: hidden;
-                opacity: 0;
-            }
-
-            @media screen and (min-width: 426px) {
-                margin: 0 auto;
-                width: 414px;
-            }
-
-            @media screen and (min-width: 1024px) {
-                display: none;
-            }
-        }
-
-        &--close {
-            height: $mobile-link-height-xl;
-
-            @media screen and (min-width: 1024px) {
-                display: none;
-            }
+    &__navigation {
+        display: none;
+        @media screen and (min-width: 1024px) {
+            display: block;
+            
         }
     }
 
     &__list {
-        list-style: none;
         margin: 0;
         padding: 0;
-        flex: 1;
+        list-style: none;
+        display: flex;
+        gap: 8px;
+    }
+}
 
-        @media (min-width: 426px) {
-            flex: none;
-            width: 414px;
+.navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: $menu-background-color;
+    padding: $pixel-small $pixel-xs $safe-margin-bottom $pixel-xs;
+    font-size: 1.125em;
+    transition: transform .3s ease-in-out;
+    
+        &[data-state="hidden"] {
+            transform: translateY(100%);
         }
 
-        @media screen and (min-width: 1024px) {
-            display: flex;
-            width: auto;
-        }
+    @media screen and (min-width: 1024px) {
+        display: none;
+    }
+    * {
+        box-sizing: border-box;
     }
 
-    &__navigation {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: linear-gradient(to bottom, $color-blue-4, $color-blue-5);
-        padding: $pixel-small $pixel-xs $safe-margin-bottom $pixel-xs;
+    &__divider {
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        transition: height .3s ease-in-out, visibility .3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        @media screen and (min-width: 1024px){
-            position: static;
-            width: auto;
-            padding: 0;
+        @media screen and (min-width: 426px) {
+            width: 418px;
+            margin: 0 auto;
         }
+        * {
+            opacity: 0;
+            transition: opacity .1s ease-in-out;
+        }
+        &[data-state="open"] {
+            height: calc(100vh - $safe-margin-top - $mobile-link-height - ($pixel-small * 2) - $safe-margin-bottom);
+            visibility: visible;
+            * {
+                opacity: 1;
+                transition: opacity .2s ease-in-out .1s;
+            }
+        }
+    }
+    &__list {
+        margin: 0;
+        padding: 0 16px;
+        list-style: none;
+        flex: 1;
     }
 
     &__item {
         border-bottom: 1px solid $color-blue-3;
-        margin:  0 $pixel-large;
         &:last-child {
             border-bottom: none;
         }
-        @media screen and (min-width: 1024px) {
-            border-bottom: none;
-            margin: 0 8px;
+    }
+    &__link, &__button {
+        display: block;
+        height: $mobile-link-height;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media (hover: hover) {
+            position: relative;
+    
+            &::after,
+            &::before {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 0px;
+                height: 2px;
+                transition: width 0.5s ease-in-out;
+            }
+    
+            &::after {
+                bottom: 0;
+                right: 0;
+                background: linear-gradient(to left, $color-blue-1, $color-blue-2);
+            }
+    
+            &::before {
+                top: 0;
+                left: 0;
+                background: linear-gradient(to right, $color-blue-1, $color-blue-2);
+            }
+    
+            &:hover {
+                &::before {
+                    right: 0;
+                    left: auto;
+                    width: 100%;
+                }
+    
+                &::after {
+                    right: auto;
+                    left: 0;
+                    width: 100%;
+                }
+            }
         }
-
     }
 
+    &__link {
+        text-decoration: none;
+        height: $mobile-link-height-xl;
+    }
     
-
-    &__button--close {
-        @media screen and (min-width: 1024px) {
-            display: none;
+    &__button {
+        background: transparent;
+        width: 100%;
+        border: none;
+        font: inherit;
+        &--open {
+            visibility: visible;
+            opacity: 1;
+            height: $mobile-link-height;
+            transition: height .3s ease-in-out, visibility .3s ease-in-out, opacity .2s ease-in-out .1s;
+            &[data-state="hidden"] {
+                visibility: hidden;
+                height: 0;
+                opacity: 0;
+                transition: height .3s ease-in-out, visibility .3s ease-in-out, opacity .1s ease-in-out;
+            }
+            @media screen and (min-width: 426px) {
+                width: 418px;
+                margin: 0 auto;
+            }
+        }
+        &--close {
+            height: $mobile-link-height-xl;
         }
     }
 }
